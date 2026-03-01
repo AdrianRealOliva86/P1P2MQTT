@@ -2250,7 +2250,11 @@ uint8_t param_value_s16fan_LE(byte paramSrc, byte paramPacketType, uint16_t para
     return 0;
   }
   int16_t v = (uint16_t) u_payloadValue_LE(payload + payloadIndex, paramValLength);
-  if (v) v = 450 + 25 * v;
+  if (v > 0) {
+    v = 450 + 25 * v;
+  } else {
+    v = 0;
+  }
   snprintf(mqtt_value, MQTT_VALUE_LEN, "%u", v);
   return publishEntityParam(paramSrc, paramPacketType, paramNr, payloadIndex, payload, mqtt_value, paramValLength);
 }
