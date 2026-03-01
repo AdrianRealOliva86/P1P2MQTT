@@ -6231,7 +6231,7 @@ byte bytesbits2keyvalue(byte packetSrc, byte packetDst, byte packetType, byte pa
   SRC(src); // set SRC char in mqttTopic
 
   switch (packetType) {
-#include "P1P2_Pseudo.h"
+#include "P1P2_ParameterConversion/P1P2_Pseudo.h"
     default : return 0; // UNKNOWN_BYTE // unknown PacketByte
   }
 
