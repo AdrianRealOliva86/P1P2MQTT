@@ -139,9 +139,9 @@ typedef struct EEPROMSettings {
   // word-alignment
   byte noWiFi;
   byte useStaticIP;
-  char static_ip[16];
-  char static_gw[16];
-  char static_nm[16];
+  char static_ip[STATIC_IP_LEN];
+  char static_gw[STATIC_IP_LEN];
+  char static_nm[STATIC_IP_LEN];
   // no longer used: byte useSensorPrefixH;
   // ======================================
   // EEPROM values added after v0.9.43:
@@ -2128,28 +2128,33 @@ void loadEEPROM() {
   }
   if (strcmp(EE.signature, EEPROM_SIGNATURE_NEW)) {
     if (strncmp(EE.signature, EEPROM_SIGNATURE_COMMON, strlen(EEPROM_SIGNATURE_COMMON))) {
-      delayedPrintfTopicS("Init MQTT credentials");
+      delayedPrintfTopicS("Init MQTT/network credentials");
       strlcpy(EE.mqttUser,     MQTT_USER,            sizeof(EE.mqttUser));
       strlcpy(EE.mqttPassword, MQTT_PASSWORD,        sizeof(EE.mqttPassword));
       strlcpy(EE.mqttServer,   MQTT_SERVER,          sizeof(EE.mqttServer));
       if (sscanf(MQTT_PORT, "%i", &EE.mqttPort) != 1) EE.mqttPort = 1883;
+      // move static IP and other network info to generic part
+      EE.ESPhwID = INIT_ESP_HW_ID;
+      EE.useStaticIP = INIT_USE_STATIC_IP;
+      EE.static_ip[0] = '\0';
+      EE.static_gw[0] = '\0';
+      EE.static_nm[0] = '\0';
     } else {
-      delayedPrintfTopicS("Maintain MQTT credentials");
+      delayedPrintfTopicS("Maintain MQTT/network credentials");
       EE.mqttServer[ MQTT_SERVER_LEN - 1 ] = '\0';
       EE.mqttUser[ MQTT_USER_LEN - 1 ] = '\0';
       EE.mqttPassword[ MQTT_PASSWORD_LEN - 1 ] = '\0';
+      // move static IP and other network info to generic part
+      EE.static_ip[STATIC_IP_LEN - 1] = '\0';
+      EE.static_gw[STATIC_IP_LEN - 1] = '\0';
+      EE.static_nm[STATIC_IP_LEN - 1] = '\0';
     }
     delayedPrintfTopicS("Init EEPROM with NEW signature");
     strlcpy(EE.signature,    EEPROM_SIGNATURE_NEW, sizeof(EE.signature));
     EE.EE_version = 0;
     EE.outputMode = INIT_OUTPUTMODE;
     EE.outputFilter = INIT_OUTPUTFILTER;
-    EE.ESPhwID = INIT_ESP_HW_ID;
     EE.noWiFi = INIT_NOWIFI;
-    EE.useStaticIP = INIT_USE_STATIC_IP;
-    EE.static_ip[0] = '\0';
-    EE.static_gw[0] = '\0';
-    EE.static_nm[0] = '\0';
   }
   if (EE.EE_version < 1) {
     // delayedPrintfTopicS("Upgrade EEPROM_version to 1");
