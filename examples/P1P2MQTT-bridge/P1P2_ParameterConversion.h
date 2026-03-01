@@ -2734,7 +2734,7 @@ void field_setting(byte packetSrc, byte packetType, byte payloadIndex, byte* pay
     M.paramVal[0][ptbv + 0] = payload[payloadIndex - 3] & 0x3F;
     M.paramVal[0][ptbv + 1] = payload[payloadIndex - 2];
     M.paramVal[0][ptbv + 2] = payload[payloadIndex - 1];
-    M.paramVal[0][ptbv + 3] = payload[payloadIndex - 0] & 0x7E;
+    M.paramVal[0][ptbv + 3] = payload[payloadIndex - 0] & 0xFE;
     M.paramSeen[0][ptbs >> 3] |= (1 << (ptbs & 0x07));
   }
 }
@@ -2747,7 +2747,7 @@ void param_field_setting(byte paramSrc, byte paramPacketType, uint16_t paramNr, 
 }
 
 uint8_t publishFieldSetting(byte paramNr) {
-  byte  ppti = 0x39 - PARAM_TP_START;
+  ppti = 0x39 - PARAM_TP_START;
   ppts = 0; // for setting seen in publishEntityParam
   ptbs = seenstart[ppti] + paramNr;
   uint16_t ptbv = valstart[ppti] + paramNr * parnr_bytes[ppti];
