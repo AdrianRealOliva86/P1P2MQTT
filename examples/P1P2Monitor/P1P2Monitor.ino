@@ -728,18 +728,6 @@ bool writeParam(void) {
     Serial_println(F(", not in range 0x11-0x51 or 0x00-0x02"));
     return 0;
   }
-  if (((wr_nr[wr_n] == 4) || (wr_nr[wr_n] == 8)) && (((wr_val[wr_n] & 0x70) == 0x70) || (!(wr_val[wr_n] & 0x10)))) {
-    Serial_print(F("wr_val byte 4/8 (fan-speed part) is 0x"));
-    Serial_print(wr_val[wr_n], HEX);
-    Serial_println(F(", not 0x10,0x30,0x50"));
-    return 0;
-  }
-  if (((wr_nr[wr_n] == 4) || (wr_nr[wr_n] == 8)) && ((wr_val[wr_n] & 0x0F) != 0x00) && ((wr_val[wr_n] & 0x0F) != 0x05)) {
-    Serial_print(F("wr_val byte 4/8 (swing-mode part) is 0x"));
-    Serial_print(wr_val[wr_n], HEX);
-    Serial_println(F(", not 0x00,0x05"));
-    return 0;
-  }
   // no limitations for payload byte 16
   if ((wr_nr[wr_n] == 17) && (wr_val[wr_n] > 0x03)) {
     Serial_print(F("wr_val byte 17 (fan-mode) is 0x"));
