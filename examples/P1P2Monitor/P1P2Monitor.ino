@@ -696,6 +696,7 @@ bool writeParam(void) {
   // Model 10 BCL FDY  38 0 1 2 4 6 8
   // Model 11 LPA FXMQ 38 0 1 2 4 6 8
   // Model 12 M   FDYQ 3B 0 1 2 4 6 8 16 17
+/*
   if ((wr_nr[wr_n] > 17) || (wr_nr[wr_n] == 3) || (wr_nr[wr_n] == 5) || (wr_nr[wr_n] == 7) || ((wr_nr[wr_n] >= 9) && (wr_nr[wr_n] <= 15)) || ((wr_nr[wr_n] == 16) && (wr_pt[wr_n] == 0x38)) || ((wr_nr[wr_n] == 17) && (wr_pt[wr_n] == 0x38))) {
     Serial_print(F("* wr_nr[wr_n] should be 0,1,2,4,6,8 (or 0x3B ,16,17): "));
     Serial_println(wr_nr[wr_n]);
@@ -719,10 +720,13 @@ bool writeParam(void) {
     Serial_println(F(", not in range 0x10-0x20"));
     return 0;
   }
+*/
   if (((wr_nr[wr_n] == 4) || (wr_nr[wr_n] == 8)) && (wr_val[wr_n] < 0x03)) {
     wr_val[wr_n] = 0x11 + (wr_val[wr_n] << 5); // map 0x00 -> 0x11; 0x01 -> 0x31; 0x02 -> 0x51
-    return 1;
-  } else if (((wr_nr[wr_n] == 4) || (wr_nr[wr_n] == 8)) && ((wr_val[wr_n] < 0x11) || (wr_val[wr_n] > 0x51))) {
+    // return 1;
+  } 
+/*
+    else if (((wr_nr[wr_n] == 4) || (wr_nr[wr_n] == 8)) && ((wr_val[wr_n] < 0x11) || (wr_val[wr_n] > 0x51))) {
     Serial_print(F("wr_val for payload byte 4/8 (fan-speed cooling/heating) is 0x"));
     Serial_print(wr_val[wr_n], HEX);
     Serial_println(F(", not in range 0x11-0x51 or 0x00-0x02"));
@@ -743,6 +747,7 @@ bool writeParam(void) {
     Serial_println(F(") must be zero"));
     return 0;
   }
+*/
   if (writeBudget) {
     if (writeBudget != 255) writeBudget--;
     wr_cnt[wr_n] = WR_CNT;
@@ -757,6 +762,7 @@ bool writeParam(void) {
     Serial_print(F(" mask 0x"));
     Serial_print(wr_mask[wr_n], HEX);
     Serial_println();
+    return 1;
   } else {
     Serial_println(F("* No write budget left"));
     if (writeRefusedBudget < 0xFF) writeRefusedBudget++;
