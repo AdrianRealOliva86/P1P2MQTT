@@ -513,11 +513,11 @@ bool scheduleMemSeen[2][SCHEDULE_MEM_SIZE] = {}; // 2 * 1166 = 2332 bytes
 #define PCKTP_ARR_SZ ((2 * PCKTP_ARR_BLOCK) + 1)
 //byte packetsrc                                   = { 00                                                                                                                                                                                          , 40                                                                                                                                                                                         ,    80 }
 //byte packettype                                  = { 08,  09,  0A,  0B,  0C,  0D,  0E,  0F,  10,  11,  12,  15,  17,  18,  19,  1F,  20,  21,  30,  31,  32,  33,  34,  35,  36,  37,  38,  39,  3A,  3B,  3C,  3D,  3E,  3F,  80,  A1,  A3,  B1,  08,  09,  0A,  0B,  0C,  0D,  0E,  0F,  10,  11,  12,  15,  17,  18,  19,  1F,  20,  21,  30,  31,  32,  33,  34,  35,  36,  37,  38,  39,  3A,  3B,  3C,  3D,  3E,  3F,  80,  A1,  A3, B1 ,    18 }
-const PROGMEM uint32_t nr_bytes [PCKTP_ARR_SZ]     = {  0,  20,  20,  20,   0,  20,  20,  20,  20,  17,  17,  18,   6,   7,   5,   0,   1,  20,  20,  20,   8,   0,   5,  19,  19,   0,  20,  14,  18,  20,  12,   0,   0,   0,  10,  16,   0,  18,   0,  20,  20,  20,   0,  20,  20,  20,  20,  20,  20,  18,  11,  19,   4,  20,  20,  20,   0,  20,   1,   0,   0,   0,   0,   0,  20,   5,   8,  19,   2,   0,   0,   0,  10,  16,  19, 18,    11     };
-const PROGMEM uint32_t bytestart[PCKTP_ARR_SZ]     = {  0,   0,  20,  40,  60,  60,  80, 100, 120, 140, 157, 174, 192, 198, 205, 210, 210, 211, 231, 251, 271, 279, 279, 284, 303, 322, 322, 342, 356, 374, 394, 406, 406, 406, 406, 416, 432, 432, 450, 450, 470, 490, 510, 510, 530, 550, 570, 590, 610, 630, 648, 659, 678, 682, 702, 722, 742, 742, 762, 763, 763, 763, 763, 763, 763, 783, 788, 796, 815, 817, 817, 817, 817, 827, 843, 862, 880  /*, sizePayloadByteVal = 891 */ };
+const PROGMEM uint32_t nr_bytes [PCKTP_ARR_SZ]     = {  0,  20,  20,  20,   0,  20,  20,  20,  20,  20,  17,  18,   6,   7,   5,   0,   2,  20,  20,  20,   8,   0,   5,  19,  19,   0,  20,  20,  18,  20,  12,   0,   0,   0,  10,  16,   0,  18,   0,  20,  20,  20,   0,  20,  20,  20,  20,  20,  20,  18,  11,  19,   4,  20,  20,  20,   0,  20,   1,   0,   0,   0,   0,   0,  20,   5,   8,  19,   2,   0,   0,   0,  10,  16,  19, 18,    11     };
+const PROGMEM uint32_t bytestart[PCKTP_ARR_SZ]     = {  0,   0,  20,  40,  60,  60,  80, 100, 120, 140, 160, 177, 195, 201, 208, 213, 213, 215, 235, 255, 275, 283, 283, 288, 307, 326, 326, 346, 366, 384, 404, 416, 416, 416, 416, 426, 442, 442, 460, 460, 480, 500, 520, 520, 540, 560, 580, 600, 620, 640, 658, 669, 688, 692, 712, 732, 752, 752, 772, 773, 773, 773, 773, 773, 773, 793, 798, 806, 825, 827, 827, 827, 827, 837, 853, 872, 890  /*, sizePayloadByteVal = 901 */ };
 
-#define sizePayloadByteVal  891
-#define sizePayloadByteSeen 112 // ceil(891/8)
+#define sizePayloadByteVal  901
+#define sizePayloadByteSeen 113 // ceil(901/8)
 
 #define sizePayloadBitsSeen 1
 
@@ -1577,7 +1577,7 @@ uint16_t newCheckPayloadBytesVal(byte packetSrc, byte packetDst, byte packetType
 #ifdef W_SERIES
     if (packetType != 0x0C)
 #endif /* W_SERIES */
-    printfTopicS("Warning: payloadIndex %i > expected %i for Src 0x%02X", payloadIndex, nr_bytes[pti], packetSrc);
+    printfTopicS("Warning: payloadIndex %i >= expected %i for Src 0x%02X", payloadIndex, nr_bytes[pti], packetSrc);
     return 0;
   }
 #endif /* MHI_SERIES */
@@ -1607,7 +1607,7 @@ uint16_t newCheckPayloadBytesVal(byte packetSrc, byte packetDst, byte packetType
     return 0;
   }
   if (length && (payloadIndex >= nr_bytes[pti])) {
-    printfTopicS("Warning: payloadIndex %i > expected %i for Src 0x%02X Type 0x%02X", payloadIndex, nr_bytes[pti], packetSrc, packetType);
+    printfTopicS("Warning: payloadIndex %i >= expected %i for Src 0x%02X Type 0x%02X", payloadIndex, nr_bytes[pti], packetSrc, packetType);
     pti = 0xFF; // for BitsVal
     return 0;
   }
