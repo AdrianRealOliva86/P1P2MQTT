@@ -4220,6 +4220,7 @@ void loop() {
     } else {
       // wait for more serial input
     }
+#ifndef MHI_SERIES
     if (pseudo0B > 5) {
       pseudo0B = 0;
       writePseudoSystemPacket0B();
@@ -4298,6 +4299,7 @@ void loop() {
       readHex[22] = Mqtt_msgSkipLowMem & 0xFF;
       writePseudoPacket(readHex, 21);
     }
+#endif /* MHI_SERIES */
   }
   saveRTC();
 }
