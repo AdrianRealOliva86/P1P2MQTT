@@ -6368,6 +6368,9 @@ void unSeen() {
 }
 
 byte bits2keyvalue(byte packetSrc, byte packetDst, byte packetType, byte payloadIndex, byte* payload, byte j) {
+#ifdef F_SERIES
+  if ((packetSrc & 0xF0) == 0x40) packetSrc == 0x40;
+#endif /* F_SERIES */
   byte b = bytesbits2keyvalue(packetSrc, packetDst, packetType, payloadIndex, payload, j) ;
   return b;
 }
