@@ -2360,11 +2360,10 @@ byte writeBudget_prev = 0;
 #endif /* E_SERIES */
 #ifdef F_SERIES
 // Messages and payload lengths:
-// ?   EKHBRD*ADV   0x30   /               0x34  5/0                                                                  0x38 20/14
+// ?   EKHBRD*ADV    0x30   /               0x34  5/0                                                                  0x38 20/14
 // BCLM FDY          0x30 20/0  [0x31 7/0]                                                                             0x38 16/15 / 0x39 11/4
 // LPA  FXMQ         0x30 20/0   0x32 8/1              0x35 19/0   0x36 19/0                                           0x38 20/17   0x39 14/5   0x3A 18/8
 // A    FXZQ         0x30 20/0   0x32 8/1              0x35 19/0   0x36 19/0                                           0x38 20/17   0x39 20/5   0x3A 18/8
-
 // M    FDYQ         0x30 20/0                                                 0x3700-0x3706 14/0 0x3707-0x3713 16/0                                       0x3B 20/19 / 0x3C 12/2
 // D=LPA?
 
@@ -2665,7 +2664,7 @@ For FDYQ-like systems, try using the same commands with packet type 38 replaced 
 #ifdef PSEUDO_PACKETS
 #ifdef EF_SERIES
     if ((RB[0] == 0x00) && (RB[1] == 0x00) && (RB[2] == 0x10)) pseudo0F = 9; // Insert one pseudo packet 00000F in output serial after 000010
-    if ((RB[0] == 0x40) && (RB[1] == 0x00) && (RB[2] == 0x10)) pseudo0E++;   // Insert one pseudo packet 00000E in output serial after every 5th 400010
+    if (((RB[0] & 0xF0) == 0x40) && (RB[1] == 0x00) && (RB[2] == 0x10)) pseudo0E++;   // Insert one pseudo packet 00000E in output serial after every 5th 4x0010
 #endif /* EF_SERIES */
 #endif /* PSEUDO_PACKETS */
 
