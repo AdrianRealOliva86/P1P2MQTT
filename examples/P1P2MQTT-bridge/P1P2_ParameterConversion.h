@@ -2108,6 +2108,7 @@ uint8_t value_s_bit(byte packetSrc, byte packetType, byte payloadIndex, byte* pa
 uint8_t value_s_nosave(byte packetSrc, byte packetType, byte payloadIndex, byte* payload, char* mqtt_value, int v) {
   snprintf(mqtt_value, MQTT_VALUE_LEN, "%i", v);
   clientPublish(mqtt_value, haQos);
+  return 0;
 }
 
 uint8_t value_f(byte packetSrc, byte packetType, byte payloadIndex, byte* payload, char* mqtt_value, float v, int length = 0) {
@@ -5126,7 +5127,7 @@ byte bytesbits2keyvalue(byte packetSrc, byte packetDst, byte packetType, byte pa
                       isSilentSchedule[PS] = false;
                       isHCSchedule[PS] = false;
                       isElectricityPriceSchedule[PS] = false;
-                      mqtt_value_schedule[PS][0] = ''';
+                      mqtt_value_schedule[PS][0] = '"';
                       mqtt_value_p[PS] = 1;
                       byteLoc2[PS] = scheduleMemLoc[PS];
                       isWeeklySchedule[PS] = true;
